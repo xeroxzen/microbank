@@ -1,0 +1,25 @@
+{
+  "name": "microbank-frontend",
+  "version": "1.0.0",
+  "description": "Microbank Frontend Monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "turbo": "^1.10.16",
+    "prettier": "^3.0.3",
+    "@types/node": "^20.5.0",
+    "typescript": "^5.1.6"
+  },
+  "packageManager": "npm@9.6.7"
+}

@@ -100,7 +100,7 @@ func main() {
 	// Get port from environment or use default
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8082"
+		port = "8081"
 	}
 
 	log.Printf("Client Service starting on port %s", port)
