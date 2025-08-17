@@ -1,0 +1,151 @@
+version: "3.8"
+
+services:
+  # Client Service (Go)
+  client-service:
+    build:
+      context: ./backend/services/client-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    environment:
+      - DB_HOST=client-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=client_service
+      - DB_SSLMODE=disable
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - GIN_MODE=release
+    depends_on:
+      - client-db
+    networks:
+      - microbank-network
+    restart: unless-stopped
+
+  # Banking Service (Go)
+  banking-service:
+    build:
+      context: ./backend/services/banking-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - DB_HOST=banking-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=banking_service
+      - DB_SSLMODE=disable
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - GIN_MODE=release
+    depends_on:
+      - banking-db
+    networks:
+      - microbank-network
+    restart: unless-stopped
+
+  # Client Dashboard (Next.js)
+  client-dashboard:
+    build:
+      context: ./frontend/apps/client-dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_CLIENT_SERVICE_URL=http://localhost:8082
+      - NEXT_PUBLIC_BANKING_SERVICE_URL=http://localhost:8081
+    depends_on:
+      - client-service
+      - banking-service
+    networks:
+      - microbank-network
+    restart: unless-stopped
+
+  # Admin Panel (Next.js)
+  admin-panel:
+    build:
+      context: ./frontend/apps/admin-panel
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_CLIENT_SERVICE_URL=http://localhost:8082
+      - NEXT_PUBLIC_BANKING_SERVICE_URL=http://localhost:8081
+    depends_on:
+      - client-service
+      - banking-service
+    networks:
+      - microbank-network
+    restart: unless-stopped
+
+  # Client Service Database
+  client-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: client_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - client_data:/var/lib/postgresql/data
+      - ./backend/services/client-service/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    networks:
+      - microbank-network
+    restart: unless-stopped
+
+  # Banking Service Database
+  banking-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: banking_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - banking_data:/var/lib/postgresql/data
+      - ./backend/services/banking-service/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5434:5432"
+    networks:
+      - microbank-network
+    restart: unless-stopped
+
+  # pgAdmin for Database Management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@microbank.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - client-db
+      - banking-db
+    networks:
+      - microbank-network
+    restart: unless-stopped
+
+  # Redis for caching and session management (optional)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - microbank-network
+    restart: unless-stopped
+
+volumes:
+  client_data:
+  banking_data:
+  pgadmin_data:
+  redis_data:
+
+networks:
+  microbank-network:
+    driver: bridge
