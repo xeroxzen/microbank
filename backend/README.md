@@ -305,8 +305,8 @@ docker build -t banking-service ./services/banking-service
 ### Production Considerations
 
 - Set `GIN_MODE=release`
-- Use strong JWT secrets
-- Enable database SSL
+- Using strong JWT secrets
+- Enabling database SSL
 - Configure proper CORS policies
 - Set up monitoring and logging
 - Use environment-specific configurations
@@ -341,29 +341,3 @@ docker build -t banking-service ./services/banking-service
 - Input validation and sanitization
 - SQL injection prevention
 - Rate limiting (configurable)
-
-### Security Best Practices
-
-- Never expose sensitive data in responses
-- Validate all input data
-- Use HTTPS in production
-- Regular security audits
-- Keep dependencies updated
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## 📞 Support
-
-- **Issues**: GitHub Issues
-- **Documentation**: README.md files
-- **Architecture**: HLD in project root
-
----
-
-**Happy Coding! 🎉**
