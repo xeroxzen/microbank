@@ -6,6 +6,7 @@ packages/ui/node_modules
 .next
 .env
 .env.local
+.turbo
 
 # Binaries for programs and plugins
 *.exe
@@ -36,3 +37,5 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+main
