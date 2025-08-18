@@ -2,14 +2,14 @@
 
 This directory contains the Go microservices for the Microbank platform.
 
-## 🏗️ Architecture
+## Architecture
 
 The backend consists of two main services:
 
 - **Client Service** (`services/client-service/`): Handles user authentication, registration, and profile management
 - **Banking Service** (`services/banking-service/`): Manages bank accounts, transactions, and balances
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -57,7 +57,7 @@ cd services/banking-service
 go run cmd/main.go
 ```
 
-## 📚 API Documentation
+## API Documentation
 
 ### Client Service API
 
@@ -138,7 +138,7 @@ go run cmd/main.go
 
 **GET** `/api/v1/transactions/{id}` _(Protected)_
 
-## 🔐 Authentication
+## Authentication
 
 All protected endpoints require a valid JWT token in the Authorization header:
 
@@ -222,7 +222,7 @@ CREATE TABLE transactions (
 );
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Run Tests
 
@@ -245,7 +245,7 @@ go test -cover ./...
 - **Integration Tests**: Test database operations and API endpoints
 - **Mock Tests**: Test service layer with mocked repositories
 
-## 🔧 Development
+## Development
 
 ### Project Structure
 
@@ -289,7 +289,7 @@ services/
 - Include proper logging and monitoring
 - Add unit tests for new functionality
 
-## 🚀 Deployment
+## Deployment
 
 ### Docker
 
@@ -331,7 +331,7 @@ docker build -t banking-service ./services/banking-service
 - Database connection health
 - Transaction success rates
 
-## 🔒 Security
+## Security
 
 ### Implemented Security Features
 
