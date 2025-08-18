@@ -3,10 +3,11 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"microbank/client-service/internal/models"
 	"microbank/client-service/internal/services"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 // AuthHandler handles authentication-related HTTP requests
